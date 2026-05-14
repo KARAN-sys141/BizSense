@@ -1,8 +1,4 @@
-// Dynamic API URL (Local vs Production)
-const BACKEND_URL = "https://your-render-app-name.onrender.com"; // Change this to your actual Render URL later
-const API = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost" 
-    ? "http://127.0.0.1:8000/api" 
-    : `${BACKEND_URL}/api`;
+const API = "/api";
 
 const dropZone   = document.getElementById("drop-zone");
 const fileInput  = document.getElementById("file-input");
@@ -38,7 +34,6 @@ fileInput.addEventListener("change", () => {
 });
 
 async function uploadFile(file) {
-
     document.getElementById("drop-icon").textContent = "⏳";
     dropZone.querySelector("p").textContent = "SCANNING DATA...";
 
@@ -244,7 +239,6 @@ async function loadInsights() {
 }
 
 document.getElementById("refresh-insights").addEventListener("click", () => {
-
     loadInsights();
 });
 

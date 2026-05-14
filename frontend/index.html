@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BizSense AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#050505] text-zinc-200 font-['Plus_Jakarta_Sans']">
+
+<aside class="sidebar">
+    <div>
+        <h1 class="text-2xl font-black tracking-tighter text-emerald-500 italic">BIZSENSE.AI</h1>
+        <p class="text-[10px] text-zinc-500 font-bold tracking-[3px] uppercase mt-1">Neural Data Engine</p>
+    </div>
+
+    <div id="drop-zone" class="drop-zone">
+        <div class="text-3xl mb-2" id="drop-icon">📂</div>
+        <p class="text-xs font-bold text-zinc-400">DRAG & DROP CSV</p>
+        <p class="text-[10px] text-zinc-600 mt-1">or click to browse</p>
+        <input type="file" id="file-input" class="hidden" accept=".csv">
+    </div>
+
+    <div id="stats-panel" class="space-y-3 opacity-20 pointer-events-none transition-all duration-500">
+        <div class="stat-card border-l-emerald-500">
+            <span>Total Revenue</span>
+            <h4 id="stat-rev">—</h4>
+        </div>
+        <div class="stat-card border-l-blue-500">
+            <span>Total Profit</span>
+            <h4 id="stat-prof">—</h4>
+        </div>
+        <div class="stat-card border-l-amber-500">
+            <span>Total Orders</span>
+            <h4 id="stat-ord">—</h4>
+        </div>
+        <div class="stat-card border-l-purple-500">
+            <span>Customers</span>
+            <h4 id="stat-cust">—</h4>
+        </div>
+        <div class="stat-card border-l-rose-500">
+            <span>Avg Order Value</span>
+            <h4 id="stat-aov">—</h4>
+        </div>
+    </div>
+
+    <div class="mt-auto">
+        <div class="p-3 bg-zinc-800/50 rounded-2xl flex items-center gap-3 mb-3">
+            <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+            <span class="text-[10px] font-bold text-zinc-400">LLAMA 3 CONNECTED</span>
+        </div>
+        <div id="file-badge" class="hidden p-3 bg-emerald-900/30 border border-emerald-800/50 rounded-2xl">
+            <p class="text-[10px] text-emerald-400 font-bold" id="file-badge-name"></p>
+            <p class="text-[10px] text-zinc-500" id="file-badge-rows"></p>
+        </div>
+    </div>
+</aside>
+
+<main class="main-content">
+
+    <header class="top-nav">
+        <nav class="flex gap-1">
+            <button class="tab-btn active" data-tab="dashboard">📊 Dashboard</button>
+            <button class="tab-btn" data-tab="insights">🧠 AI Insights</button>
+            <button class="tab-btn" data-tab="anomalies">⚠️ Anomalies</button>
+            <button class="tab-btn" data-tab="chat">💬 Chat</button>
+        </nav>
+        <div class="flex items-center gap-3">
+            <span id="header-file" class="text-xs text-zinc-500">No file loaded</span>
+        </div>
+    </header>
+
+    <section id="tab-dashboard" class="tab-content active p-8">
+
+        <div id="dashboard-empty" class="empty-state">
+            <p class="text-6xl mb-4">📂</p>
+            <h2 class="text-2xl font-black text-zinc-600">Upload a CSV to Begin</h2>
+            <p class="text-zinc-600 text-sm mt-2">Drag & drop your Superstore or any sales CSV on the left</p>
+        </div>
+
+        <div id="dashboard-content" class="hidden">
+
+            <div class="grid grid-cols-2 gap-6 mb-6">
+                <div class="chart-card col-span-2">
+                    <h3 class="chart-title">Monthly Sales Trend</h3>
+                    <canvas id="chart-trend" height="80"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3 class="chart-title">Sales by Category</h3>
+                    <canvas id="chart-category" height="160"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3 class="chart-title">Sales by Region</h3>
+                    <canvas id="chart-region" height="160"></canvas>
+                </div>
+                <div class="chart-card col-span-2">
+                    <h3 class="chart-title">Top 5 Sub-Categories by Profit</h3>
+                    <canvas id="chart-subcats" height="80"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="tab-insights" class="tab-content p-8">
+        <div id="insights-empty" class="empty-state">
+            <p class="text-6xl mb-4">🧠</p>
+            <h2 class="text-2xl font-black text-zinc-600">Upload CSV First</h2>
+        </div>
+        <div id="insights-content" class="hidden">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-black">AI Business Insights</h2>
+                <button id="refresh-insights" class="btn-secondary">↻ Regenerate</button>
+            </div>
+            <div id="insights-grid" class="grid grid-cols-1 gap-4">
+
+            </div>
+        </div>
+    </section>
+
+    <section id="tab-anomalies" class="tab-content p-8">
+        <div id="anomalies-empty" class="empty-state">
+            <p class="text-6xl mb-4">⚠️</p>
+            <h2 class="text-2xl font-black text-zinc-600">Upload CSV First</h2>
+        </div>
+        <div id="anomalies-content" class="hidden">
+            <h2 class="text-xl font-black mb-6">Statistical Anomaly Detection</h2>
+            <p class="text-sm text-zinc-500 mb-6">Using IQR (Interquartile Range) method to detect unusual months in Sales data.</p>
+            <div id="anomalies-list" class="space-y-4"></div>
+        </div>
+    </section>
+
+    <section id="tab-chat" class="tab-content flex flex-col" style="height: calc(100vh - 64px)">
+        <div id="chat-display" class="flex-1 overflow-y-auto p-8 space-y-6">
+            <div id="chat-empty" class="empty-state">
+                <p class="text-6xl mb-4">💬</p>
+                <h2 class="text-2xl font-black text-zinc-600">Ask Anything About Your Data</h2>
+                <p class="text-zinc-600 text-sm mt-2">Upload a CSV, then try: "Show top 5 products by sales"</p>
+            </div>
+        </div>
+        <div class="p-6 border-t border-zinc-800">
+            <div class="relative max-w-4xl mx-auto">
+                <input type="text" id="query-input"
+                    placeholder="Ask BizSense anything... (e.g. 'Which region has highest profit?')"
+                    disabled
+                    class="chat-input">
+                <button id="send-btn" disabled class="chat-send-btn">ANALYZE ↗</button>
+            </div>
+
+            <div class="flex gap-2 mt-3 max-w-4xl mx-auto flex-wrap" id="quick-prompts">
+                <button class="quick-btn">Top 5 products by sales</button>
+                <button class="quick-btn">Profit by region</button>
+                <button class="quick-btn">Monthly revenue trend</button>
+                <button class="quick-btn">Which category is most profitable?</button>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

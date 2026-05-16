@@ -21,12 +21,12 @@ Built as a portfolio project demonstrating full-stack AI development — from da
 
 | Feature | Description |
 |--------|-------------|
-| 📊 **Auto KPI Detection** | Automatically identifies revenue, profit, orders from any CSV |
-| 🧠 **AI Insights** | LLaMA 3.3 70B generates 5 business insights with recommendations |
-| ⚠️ **Anomaly Detection** | IQR statistical method finds unusual months in your data |
-| 💬 **Natural Language Q&A** | Ask "Which region has highest profit?" — get instant answers |
-| 📈 **Interactive Charts** | Line, Bar, Doughnut, Horizontal Bar via Chart.js |
-| 🔴 **Smart Alerts** | Color-coded severity: Critical / High / Medium |
+|  **Auto KPI Detection** | Automatically identifies revenue, profit, orders from any CSV |
+|  **AI Insights** | LLaMA 3.3 70B generates 5 business insights with recommendations |
+|  **Anomaly Detection** | IQR statistical method finds unusual months in your data |
+|  **Natural Language Q&A** | Ask "Which region has highest profit?" — get instant answers |
+|  **Interactive Charts** | Line, Bar, Doughnut, Horizontal Bar via Chart.js |
+|  **Smart Alerts** | Color-coded severity: Critical / High / Medium |
 
 ---
 
